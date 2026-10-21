@@ -1,0 +1,17 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# local tooling
+node_modules/
+.vercel/
+.env
+.env.*
+*.log
+
+# Claude Design export (large bundle; keep it outside the repo)
+*Personal Site.html
+Ellen_Ivanovic___Personal_Site.html
