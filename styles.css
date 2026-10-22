@@ -267,6 +267,16 @@ section[id] { scroll-margin-top: 0; }
 .acc-inner > .tools { margin: 0 24px 28px; }
 .alt-cta a, .r > .label a { color: var(--pri); }
 .contact-line { max-width: 44ch; margin-top: -12px; }
+/* resources page */
+.cell.is-current { color: var(--pri); background: var(--box); }
+.back { color: var(--muted-text); text-decoration: none; }
+.back:hover { color: var(--pri); }
+.res-count { margin-top: 24px; max-width: 30ch; }
+.res li > a { padding: 4px 0; }
+.res-text { display: flex; flex-direction: column; gap: 4px; }
+.res-name { font-size: 15px; font-weight: 500; letter-spacing: .04em; }
+.res-desc { font-size: 12px; font-weight: 400; letter-spacing: .04em; color: var(--muted-text); line-height: 1.5; }
+.res li > a:hover .res-desc { color: var(--ink); }
 @media (max-width: 1440px) { .explore-label { display: none; } .explore-bar { gap: 2px; } .explore-bar i { width: 7px; height: 7px; } }
 @media (max-width: 820px) {
   .acc-body .acc-inner > p.body { padding: 0 16px 16px; }
