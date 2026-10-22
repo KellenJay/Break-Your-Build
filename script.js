@@ -97,6 +97,107 @@
     history.pushState(null, '', hash);
   }
 
+  var reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ---- Reading progress line ----
+  var bar = document.querySelector('.progress span');
+  var ticking = false;
+  function drawProgress() {
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.transform = 'scaleX(' + (max > 0 ? Math.min(1, window.scrollY / max) : 0) + ')';
+    ticking = false;
+  }
+  if (bar) {
+    window.addEventListener('scroll', function () {
+      if (!ticking) { ticking = true; requestAnimationFrame(drawProgress); }
+    }, { passive: true });
+    drawProgress();
+  }
+
+  // ---- Explore tracker: one segment per section, filled once it has been seen ----
+  var explore = document.querySelector('.explore');
+  var tracked = ['what', 'builds', 'toolkit', 'idea', 'find', 'wins', 'writing', 'contact']
+    .map(function (id) { return document.getElementById(id); })
+    .filter(Boolean);
+  if (explore && tracked.length && 'IntersectionObserver' in window) {
+    var segBox = explore.querySelector('.explore-bar');
+    var countEl = explore.querySelector('.explore-count');
+    var segs = tracked.map(function () { return segBox.appendChild(document.createElement('i')); });
+    var seen = 0;
+    var toast = document.querySelector('.toast');
+    countEl.textContent = '0/' + tracked.length;
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        io.unobserve(en.target);
+        var seg = segs[tracked.indexOf(en.target)];
+        seg.classList.add('on', 'pop');
+        setTimeout(function () { seg.classList.remove('pop'); }, 400);
+        seen += 1;
+        countEl.textContent = seen + '/' + tracked.length;
+        if (seen === tracked.length) {
+          explore.classList.add('done');
+          showToast();
+        }
+      });
+    }, { threshold: 0.3 });
+    tracked.forEach(function (sec) { io.observe(sec); });
+
+    function showToast() {
+      if (!toast) return;
+      setTimeout(function () {
+        toast.hidden = false;
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () { toast.classList.add('show'); });
+        });
+      }, 600);
+    }
+    if (toast) {
+      toast.addEventListener('click', function (e) {
+        if (!e.target.closest('[data-toast-close]')) return;
+        toast.classList.remove('show');
+        setTimeout(function () { toast.hidden = true; }, 400);
+      });
+    }
+  }
+
+  // ---- "Break it": knock the Break Your Build letters loose, then build them back ----
+  var breakBtn = document.querySelector('.break-btn');
+  var bybHead = document.getElementById('idea-h');
+  if (breakBtn && bybHead) {
+    bybHead.setAttribute('aria-label', 'Break Your Build');
+    // wrap each letter in its own span (the dash line stays as it is)
+    bybHead.querySelectorAll('span').forEach(function (sp) {
+      if (sp.children.length || sp.classList.contains('dash')) return;
+      var text = sp.textContent;
+      sp.textContent = '';
+      sp.setAttribute('aria-hidden', 'true');
+      text.split('').forEach(function (c) {
+        var ch = document.createElement('span');
+        ch.className = 'ch';
+        ch.textContent = c;
+        sp.appendChild(ch);
+      });
+    });
+    var letters = bybHead.querySelectorAll('.ch');
+    var label = breakBtn.querySelector('.break-label');
+
+    breakBtn.addEventListener('click', function () {
+      var broken = !bybHead.classList.contains('broken');
+      bybHead.classList.toggle('broken', broken);
+      breakBtn.setAttribute('aria-pressed', broken ? 'true' : 'false');
+      label.textContent = broken ? 'Build it back' : 'Break it';
+      letters.forEach(function (ch) {
+        if (!broken) { ch.style.transform = ''; return; }
+        var x = (Math.random() - .5) * (reduceMotion ? 20 : 120);
+        var y = Math.random() * (reduceMotion ? 16 : 110) - 20;
+        var r = (Math.random() - .5) * (reduceMotion ? 10 : 70);
+        ch.style.transform = 'translate(' + x.toFixed(0) + 'px,' + y.toFixed(0) + 'px) rotate(' + r.toFixed(0) + 'deg)';
+      });
+    });
+  }
+
   // ---- Hero slides (arrows only show when there is more than one portrait) ----
   var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
   var ctrl = document.querySelector('.slide-ctrl');

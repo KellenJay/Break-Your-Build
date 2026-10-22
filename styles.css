@@ -232,6 +232,59 @@ section[id] { scroll-margin-top: 0; }
 .fname { font-size: 16px; font-weight: 500; letter-spacing: .04em; }
 .farr { position: absolute; top: 28px; right: 28px; font-size: 18px; color: var(--pri); }
 
+/* ---------- one-screen sections (laptop and desktop) ----------
+   The hero (with the info strip under it) and "Break Your Build" each fit in one
+   browser window. Heading sizes follow the window height as well as its width. */
+@media (min-width: 821px) {
+  .strip > div { padding: 20px 48px; }
+  .hero { height: max(440px, calc(100svh - 72px - 120px)); min-height: 0; max-height: 900px; }
+  .hero-l { padding: 40px 48px; }
+  .hero h1 { font-size: clamp(96px, min(15vw, calc((100svh - 380px) / 2.4)), 260px); }
+  .hero-intro { margin-top: 28px; }
+  .slides { min-height: 0; }
+
+  .byb-top { height: max(300px, calc(100svh - 370px)); max-height: 680px; }
+  .byb-top .l { padding: 40px 48px; }
+  .byb-top .photo { overflow: hidden; }
+  .byb-top .photo img { height: 100%; object-fit: cover; object-position: 50% 30%; }
+  #idea-h { font-size: clamp(56px, min(12vw, calc((100svh - 530px) / 2.4)), 200px); }
+  .byb-bottom { padding: 36px 48px 40px; gap: 28px; }
+  .duo > div { padding-top: 24px; padding-bottom: 0; }
+  .duo > div + div { padding-top: 24px; padding-bottom: 0; }
+  .duo .body { max-width: 58ch; }
+}
+
+/* ---------- small game layer ---------- */
+
+/* reading progress line across the top of the window */
+.progress { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 30; pointer-events: none; }
+.progress span { display: block; height: 100%; background: var(--pri); transform-origin: 0 50%; transform: scaleX(0); }
+
+/* "Explored 3/8" tracker in the top bar */
+.spacer { display: flex; align-items: center; justify-content: flex-end; padding: 0 24px; min-width: 0; }
+.explore { display: flex; align-items: center; gap: 12px; font-size: 11px; font-weight: 500; letter-spacing: .08em; color: var(--muted-text); white-space: nowrap; }
+.explore-bar { display: flex; gap: 3px; }
+.explore-bar i { display: block; width: 10px; height: 10px; border: 1px solid var(--line); transition: background .4s, border-color .4s, transform .4s; }
+.explore-bar i.on { background: var(--pri); border-color: var(--pri); }
+.explore-bar i.pop { transform: scale(1.35); }
+.explore-count { color: var(--ink); min-width: 3ch; }
+.explore.done .explore-count { color: var(--pri); }
+
+/* "8/8 explored" note, shown once */
+.toast { position: fixed; left: 50%; bottom: 20px; z-index: 35; width: min(460px, calc(100% - 32px)); background: var(--bg); border: 1px solid var(--pri); padding: 20px 20px 20px 24px; display: grid; gap: 8px; transform: translate(-50%, 16px); opacity: 0; transition: opacity .4s, transform .4s; font-family: var(--font-body); color: var(--ink); text-transform: uppercase; }
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+.toast[hidden] { display: none; }
+.toast .label { color: var(--pri); }
+.toast-text { margin: 0; font-size: 16px; font-weight: 500; letter-spacing: .03em; line-height: 1.4; }
+.toast-actions { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 8px; }
+.toast-x { width: 48px; height: 48px; min-width: 48px; padding: 0; border: 1px solid var(--line); }
+
+/* "Break it" button: knocks the heading letters loose, then builds them back */
+.byb-top .l { flex-direction: column; align-items: flex-start; justify-content: flex-end; gap: 28px; overflow: hidden; }
+#idea-h span { white-space: nowrap; flex: none; }
+.ch { display: inline-block; transition: transform .7s cubic-bezier(.34, 1.56, .64, 1); will-change: transform; }
+.broken .ch { transition: transform .6s cubic-bezier(.2, .7, .2, 1); }
+
 /* motion: headings rise in as they scroll into view (browsers that support it) */
 @supports (animation-timeline: view()) {
   .reveal { animation: rise linear both; animation-timeline: view(); animation-range: entry 0% entry 35%; }
@@ -240,7 +293,7 @@ section[id] { scroll-margin-top: 0; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .reveal { animation: none; }
-  .shot-img, .acc-body, .drawer, .scrim, .slide { transition: none; }
+  .shot-img, .acc-body, .drawer, .scrim, .slide, .ch, .toast, .explore-bar i { transition: none; }
 }
 
 /* tablet: collapse nav into the menu */
@@ -288,6 +341,10 @@ section[id] { scroll-margin-top: 0; }
   .foot .end { text-align: left; }
   .nav { justify-content: flex-start; }
   .cell.text { padding: 0 16px; font-size: 11px; }
+  .spacer { padding: 0 12px; }
+  .explore-label { display: none; }
+  .explore-bar i { width: 6px; height: 6px; }
+  .explore { gap: 8px; }
   .sub-row input { font-size: 16px; } /* stops iPhone zooming in on tap */
   .mono { width: 64px; }
   .drawer { width: 100%; border-left: 0; }
