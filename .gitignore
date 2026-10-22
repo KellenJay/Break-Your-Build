@@ -15,3 +15,6 @@ node_modules/
 # Claude Design export (large bundle; keep it outside the repo)
 *Personal Site.html
 Ellen_Ivanovic___Personal_Site.html
+
+# private notes (contract details, briefs) - never commit
+notes/

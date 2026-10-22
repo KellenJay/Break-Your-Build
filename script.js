@@ -116,7 +116,7 @@
 
   // ---- Explore tracker: one segment per section, filled once it has been seen ----
   var explore = document.querySelector('.explore');
-  var tracked = ['what', 'builds', 'toolkit', 'idea', 'find', 'wins', 'writing', 'contact']
+  var tracked = ['what', 'builds', 'workshops', 'toolkit', 'resources', 'idea', 'find', 'communities', 'wins', 'writing', 'contact']
     .map(function (id) { return document.getElementById(id); })
     .filter(Boolean);
   if (explore && tracked.length && 'IntersectionObserver' in window) {
@@ -126,6 +126,8 @@
     var seen = 0;
     var toast = document.querySelector('.toast');
     countEl.textContent = '0/' + tracked.length;
+    var toastLabel = toast && toast.querySelector('.toast-label');
+    if (toastLabel) toastLabel.textContent = tracked.length + '/' + tracked.length + ' explored';
 
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
