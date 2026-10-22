@@ -267,6 +267,21 @@ section[id] { scroll-margin-top: 0; }
 .acc-inner > .tools { margin: 0 24px 28px; }
 .alt-cta a, .r > .label a { color: var(--pri); }
 .contact-line { max-width: 44ch; margin-top: -12px; }
+/* inline text button (e.g. "See my workshops") */
+.inline-link { background: none; border: 0; padding: 0; font: inherit; text-transform: inherit; letter-spacing: inherit; color: var(--pri); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.inline-link:hover { color: var(--pri-d); }
+.drow { border-top: 1px solid var(--line); padding: 28px 0; display: flex; flex-direction: column; gap: 14px; }
+.drow:last-child { border-bottom: 1px solid var(--line); }
+.drow h3 { font-size: clamp(64px, 7vw, 96px); }
+.drow .label .wip { margin-left: 8px; }
+
+/* "Break it" nudge: a floating finger pointing at the button */
+.break-wrap { display: flex; align-items: center; gap: 14px; position: relative; z-index: 2; }
+.nudge { font-size: 30px; line-height: 1; display: inline-block; transform: rotate(-30deg); animation: nudge 1.4s ease-in-out infinite; user-select: none; pointer-events: none; }
+@keyframes nudge { 0%, 100% { transform: rotate(-30deg) translate(0, 0); } 50% { transform: rotate(-30deg) translate(-8px, 0); } }
+.broken ~ .break-wrap .nudge { animation-duration: .8s; }
+@media (prefers-reduced-motion: reduce) { .nudge { animation: none; } }
+
 /* resources page */
 .cell.is-current { color: var(--pri); background: var(--box); }
 .back { color: var(--muted-text); text-decoration: none; }

@@ -90,6 +90,11 @@
     if (e.key === 'Escape') closePanel();
   });
 
+  // links like /#workshops (from the resources page) open that panel on arrival
+  if (location.hash === '#workshops' && document.getElementById('drawer-workshops')) {
+    openPanel('workshops');
+  }
+
   function goTo(hash) {
     var target = document.querySelector(hash);
     if (!target) return;
@@ -116,7 +121,7 @@
 
   // ---- Explore tracker: one segment per section, filled once it has been seen ----
   var explore = document.querySelector('.explore');
-  var tracked = ['what', 'builds', 'workshops', 'toolkit', 'resources', 'idea', 'find', 'communities', 'wins', 'writing', 'contact']
+  var tracked = ['what', 'builds', 'toolkit', 'resources', 'idea', 'find', 'communities', 'wins', 'writing', 'contact']
     .map(function (id) { return document.getElementById(id); })
     .filter(Boolean);
   if (explore && tracked.length && 'IntersectionObserver' in window) {
