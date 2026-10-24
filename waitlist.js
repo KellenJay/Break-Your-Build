@@ -2,8 +2,8 @@
 (function () {
   'use strict';
 
-  // Where sign-ups are sent. Set once the storage is chosen.
-  var ENDPOINT = '';
+  // Google Apps Script web app (Workshop waitlist project) that saves each sign-up to Ellen's Google Sheet and emails her.
+  var ENDPOINT = 'https://script.google.com/macros/s/AKfycbxX-n4PsOVt1JSI8Q6hn_wK1lxgQIWo0TPNu_0dRuKC55NdMBfFyx2hkiApdBbFD44N/exec';
 
   var form = document.getElementById('waitlist-form');
   if (!form) return;
